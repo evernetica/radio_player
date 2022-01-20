@@ -10,7 +10,7 @@ class ScreenPlayer extends StatelessWidget {
     return Container(
         color: Colors.green,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _thumbnail(context),
             _controlButtonsBar(context),
@@ -21,22 +21,42 @@ class ScreenPlayer extends StatelessWidget {
   Widget _thumbnail(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
-      child: Container(
-        color: Colors.white,
-        child: FractionallySizedBox(
-          widthFactor: 0.8,
-          child: Align(
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: Container(
-                color: Colors.black,
-                child: const FittedBox(
-                  child: Icon(
-                    Icons.image,
-                    color: Colors.blue,
+      child: FractionallySizedBox(
+        widthFactor: 1,
+        child: Align(
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    color: Colors.black,
+                    child: const FittedBox(
+                      child: Icon(
+                        Icons.image,
+                        color: Colors.blue,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "Title Here",
+                        style: TextStyle(
+                            inherit: false,
+                            color: Colors.black,
+                            fontSize: 24.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -73,9 +93,10 @@ class ScreenPlayer extends StatelessWidget {
                 border: Border.all(color: Colors.black, width: 5.0)),
             child: TextButton(
               style: ButtonStyle(
-                overlayColor: MaterialStateColor.resolveWith((states) => Colors.black54),
-                shape:
-                    MaterialStateProperty.all<CircleBorder>(const CircleBorder()),
+                overlayColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black54),
+                shape: MaterialStateProperty.all<CircleBorder>(
+                    const CircleBorder()),
               ),
               onPressed: callback,
               child: FractionallySizedBox(
