@@ -10,8 +10,6 @@ class ScreenPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return BlocProvider(
       create: (context) => PlayerScreenCubit(),
       child: BlocBuilder<PlayerScreenCubit, PlayerScreenState>(
@@ -52,8 +50,9 @@ class ScreenPlayer extends StatelessWidget {
                           ? Image.asset("assets/images/radio_placeholder.jpeg")
                           : Image.network(
                               state.currentStationArtUrl,
-                              errorBuilder: (context, child, snapshot) => Image.asset(
-                                  "assets/images/radio_placeholder.jpeg"),
+                              errorBuilder: (context, child, snapshot) =>
+                                  Image.asset(
+                                      "assets/images/radio_placeholder.jpeg"),
                             ),
                     ),
                   ),
@@ -89,17 +88,23 @@ class ScreenPlayer extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          _controlsButton(context, Icons.skip_previous, 2, enableButtons,
+              _previousStationAction),
           _controlsButton(
-              context, Icons.skip_previous, 1, enableButtons, _previousStationAction),
-          _controlsButton(context, state.isPlaying ? Icons.pause : Icons.play_arrow, 2, enableButtons, _playPauseAction),
-          _controlsButton(context, Icons.skip_next, 1, enableButtons, _nextStationAction),
+              context,
+              state.isPlaying ? Icons.pause : Icons.play_arrow,
+              3,
+              enableButtons,
+              _playPauseAction),
+          _controlsButton(
+              context, Icons.skip_next, 2, enableButtons, _nextStationAction),
         ],
       ),
     );
   }
 
-  Widget _controlsButton(BuildContext context, IconData icon, int flex, bool enabled,
-      void Function(BuildContext context) callback) {
+  Widget _controlsButton(BuildContext context, IconData icon, int flex,
+      bool enabled, void Function(BuildContext context) callback) {
     return Expanded(
       flex: flex,
       child: AspectRatio(
@@ -117,7 +122,7 @@ class ScreenPlayer extends StatelessWidget {
                 shape: MaterialStateProperty.all<CircleBorder>(
                     const CircleBorder()),
               ),
-              onPressed:  enabled ? () => callback(context) : null,
+              onPressed: enabled ? () => callback(context) : null,
               child: FractionallySizedBox(
                 widthFactor: 1,
                 child: FittedBox(
