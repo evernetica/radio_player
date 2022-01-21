@@ -41,7 +41,6 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
       currentStationId: state.currentStationId,
       isPlaying: audioPlayer!.playing,
     ));
-    print("${audioPlayer!.playing} + ${state.isPlaying}");
   }
 
   void nextStation() async {
