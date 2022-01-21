@@ -82,21 +82,23 @@ class ScreenPlayer extends StatelessWidget {
   }
 
   Widget _controlButtonsBar(BuildContext context, PlayerScreenState state) {
+    bool enableButtons = state.currentStationUrl != "";
+
     return FractionallySizedBox(
       widthFactor: 0.7,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _controlsButton(
-              context, Icons.skip_previous, 1, _previousStationAction),
-          _controlsButton(context, state.isPlaying ? Icons.pause : Icons.play_arrow, 2, _playPauseAction),
-          _controlsButton(context, Icons.skip_next, 1, _nextStationAction),
+              context, Icons.skip_previous, 1, enableButtons, _previousStationAction),
+          _controlsButton(context, state.isPlaying ? Icons.pause : Icons.play_arrow, 2, enableButtons, _playPauseAction),
+          _controlsButton(context, Icons.skip_next, 1, enableButtons, _nextStationAction),
         ],
       ),
     );
   }
 
-  Widget _controlsButton(BuildContext context, IconData icon, int flex,
+  Widget _controlsButton(BuildContext context, IconData icon, int flex, bool enabled,
       void Function(BuildContext context) callback) {
     return Expanded(
       flex: flex,
@@ -115,7 +117,7 @@ class ScreenPlayer extends StatelessWidget {
                 shape: MaterialStateProperty.all<CircleBorder>(
                     const CircleBorder()),
               ),
-              onPressed: () => callback(context),
+              onPressed:  enabled ? () => callback(context) : null,
               child: FractionallySizedBox(
                 widthFactor: 1,
                 child: FittedBox(
