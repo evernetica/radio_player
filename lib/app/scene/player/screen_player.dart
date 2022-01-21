@@ -20,7 +20,7 @@ class ScreenPlayer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _thumbnail(context, state),
-              _controlButtonsBar(context),
+              _controlButtonsBar(context, state),
             ],
           ),
         );
@@ -84,7 +84,7 @@ class ScreenPlayer extends StatelessWidget {
     );
   }
 
-  Widget _controlButtonsBar(BuildContext context) {
+  Widget _controlButtonsBar(BuildContext context, PlayerScreenState state) {
     return FractionallySizedBox(
       widthFactor: 0.7,
       child: Row(
@@ -92,7 +92,7 @@ class ScreenPlayer extends StatelessWidget {
         children: [
           _controlsButton(
               context, Icons.skip_previous, 1, _previousStationAction),
-          _controlsButton(context, Icons.play_arrow, 2, _playPauseAction),
+          _controlsButton(context, state.isPlaying ? Icons.pause : Icons.play_arrow, 2, _playPauseAction),
           _controlsButton(context, Icons.skip_next, 1, _nextStationAction),
         ],
       ),
@@ -135,7 +135,9 @@ class ScreenPlayer extends StatelessWidget {
     );
   }
 
-  void _playPauseAction(BuildContext context) {}
+  void _playPauseAction(BuildContext context) {
+    BlocProvider.of<PlayerScreenCubit>(context).playPause();
+  }
 
   void _nextStationAction(BuildContext context) {
     BlocProvider.of<PlayerScreenCubit>(context).nextStation();

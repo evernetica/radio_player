@@ -19,9 +19,32 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
     }
 
     emit(PlayerScreenState(stationInfoList: stationInfoEntitiesList));
+
+    await audioPlayer!.setUrl(state.currentStationUrl, preload: false);
+    audioPlayer!.play();
+    emit(PlayerScreenState(
+      stationInfoList: stationInfoEntitiesList,
+      currentStationId: state.currentStationId,
+      isPlaying: audioPlayer!.playing,
+    ));
   }
 
-  void nextStation() {
+  void playPause() async {
+    if (audioPlayer!.playing) {
+      await audioPlayer!.stop();
+    } else {
+      audioPlayer!.play();
+    }
+
+    emit(PlayerScreenState(
+      stationInfoList: state.stationInfoList,
+      currentStationId: state.currentStationId,
+      isPlaying: audioPlayer!.playing,
+    ));
+    print("${audioPlayer!.playing} + ${state.isPlaying}");
+  }
+
+  void nextStation() async {
     int stationId = state.currentStationId;
 
     stationId >= state.stationInfoList.length - 1 ? stationId = 0 : stationId++;
@@ -29,10 +52,13 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
     emit(PlayerScreenState(
       stationInfoList: state.stationInfoList,
       currentStationId: stationId,
+      isPlaying: state.isPlaying,
     ));
+
+    await audioPlayer!.setUrl(state.currentStationUrl, preload: false);
   }
 
-  void prevStation() {
+  void prevStation() async {
     int stationId = state.currentStationId;
 
     stationId <= 0
@@ -44,6 +70,9 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
     emit(PlayerScreenState(
       stationInfoList: state.stationInfoList,
       currentStationId: stationId,
+      isPlaying: state.isPlaying,
     ));
+
+    await audioPlayer!.setUrl(state.currentStationUrl, preload: false);
   }
 }

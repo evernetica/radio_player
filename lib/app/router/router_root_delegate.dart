@@ -26,10 +26,10 @@ class RouterRootDelegate extends RouterDelegate<RouterState> {
     List<Page> pages = [];
 
     if (_routerCubit.state is RouterStateSplashScreen) {
-      pages.add(const MaterialPage(child:  ScreenSplash()));
+      pages.add(const MaterialPage(child: ScreenSplash()));
     }
     if (_routerCubit.state is RouterStatePlayerScreen) {
-      pages.add(const MaterialPage(child:  ScreenPlayer()));
+      pages.add(const MaterialPage(child: ScreenPlayer()));
     }
 
     return pages;
