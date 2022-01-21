@@ -10,6 +10,8 @@ class ScreenPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
     return BlocProvider(
       create: (context) => PlayerScreenCubit(),
       child: BlocBuilder<PlayerScreenCubit, PlayerScreenState>(
@@ -50,13 +52,8 @@ class ScreenPlayer extends StatelessWidget {
                           ? Image.asset("assets/images/radio_placeholder.jpeg")
                           : Image.network(
                               state.currentStationArtUrl,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Image.asset(
-                                    "assets/images/radio_placeholder.jpeg");
-                              },
+                              errorBuilder: (context, child, snapshot) => Image.asset(
+                                  "assets/images/radio_placeholder.jpeg"),
                             ),
                     ),
                   ),
