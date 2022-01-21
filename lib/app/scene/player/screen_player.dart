@@ -14,8 +14,6 @@ class ScreenPlayer extends StatelessWidget {
       create: (context) => PlayerScreenCubit(),
       child: BlocBuilder<PlayerScreenCubit, PlayerScreenState>(
           builder: (context, state) {
-        BlocProvider.of<PlayerScreenCubit>(context).getStationInfoList();
-
         return Container(
           color: Colors.green,
           child: Column(
@@ -43,13 +41,23 @@ class ScreenPlayer extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 4,
-                  child: Container(
-                    color: Colors.black,
-                    child: const FittedBox(
-                      child: Icon(
-                        Icons.image,
-                        color: Colors.blue,
-                      ),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      clipBehavior: Clip.hardEdge,
+                      child: state.currentStationArtUrl == "no_image"
+                          ? Image.asset("assets/images/radio_placeholder.jpeg")
+                          : Image.network(
+                              state.currentStationArtUrl,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Image.asset(
+                                    "assets/images/radio_placeholder.jpeg");
+                              },
+                            ),
                     ),
                   ),
                 ),
@@ -59,7 +67,7 @@ class ScreenPlayer extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "google sheets loaded: ${state.stationInfoList.isNotEmpty}",
+                        state.currentStationName + state.currentStationId.toString(),
                         style: const TextStyle(
                             inherit: false,
                             color: Colors.black,
@@ -91,8 +99,8 @@ class ScreenPlayer extends StatelessWidget {
     );
   }
 
-  Widget _controlsButton(
-      BuildContext context, IconData icon, int flex, void Function() callback) {
+  Widget _controlsButton(BuildContext context, IconData icon, int flex,
+      void Function(BuildContext context) callback) {
     return Expanded(
       flex: flex,
       child: AspectRatio(
@@ -110,7 +118,7 @@ class ScreenPlayer extends StatelessWidget {
                 shape: MaterialStateProperty.all<CircleBorder>(
                     const CircleBorder()),
               ),
-              onPressed: callback,
+              onPressed: () => callback(context),
               child: FractionallySizedBox(
                 widthFactor: 1,
                 child: FittedBox(
@@ -127,9 +135,13 @@ class ScreenPlayer extends StatelessWidget {
     );
   }
 
-  void _playPauseAction() {}
+  void _playPauseAction(BuildContext context) {}
 
-  void _nextStationAction() {}
+  void _nextStationAction(BuildContext context) {
+    BlocProvider.of<PlayerScreenCubit>(context).nextStation();
+  }
 
-  void _previousStationAction() {}
+  void _previousStationAction(BuildContext context) {
+    BlocProvider.of<PlayerScreenCubit>(context).prevStation();
+  }
 }

@@ -5,8 +5,9 @@ import 'package:radio_player/main.dart';
 
 class PlayerScreenCubit extends Cubit<PlayerScreenState> {
   PlayerScreenCubit() : super(PlayerScreenState()) {
-
-    if (state.stationInfoList.isEmpty) getStationInfoList();
+    if (state.stationInfoList.isEmpty) {
+      getStationInfoList();
+    }
   }
 
   Future<void> getStationInfoList() async {
@@ -18,5 +19,31 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
     }
 
     emit(PlayerScreenState(stationInfoList: stationInfoEntitiesList));
+  }
+
+  void nextStation() {
+    int stationId = state.currentStationId;
+
+    stationId >= state.stationInfoList.length - 1 ? stationId = 0 : stationId++;
+
+    emit(PlayerScreenState(
+      stationInfoList: state.stationInfoList,
+      currentStationId: stationId,
+    ));
+  }
+
+  void prevStation() {
+    int stationId = state.currentStationId;
+
+    stationId <= 0
+        ? stationId = (state.stationInfoList.isNotEmpty
+            ? state.stationInfoList.length - 1
+            : 0)
+        : stationId--;
+
+    emit(PlayerScreenState(
+      stationInfoList: state.stationInfoList,
+      currentStationId: stationId,
+    ));
   }
 }
