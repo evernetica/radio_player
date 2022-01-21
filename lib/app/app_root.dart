@@ -11,6 +11,9 @@ class AppRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    precacheImage(const AssetImage("assets/images/radio_placeholder.jpeg"), context);
+
     return BlocProvider(
       create: (context) => RouterCubit(),
       child: MaterialApp(

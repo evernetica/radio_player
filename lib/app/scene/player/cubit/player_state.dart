@@ -33,7 +33,7 @@ class PlayerScreenState extends Equatable {
 
   String get currentStationArtUrl => _stationInfoList.isNotEmpty
       ? _stationInfoList[_currentStationId].artUrl
-      : "no_image";
+      : "";
 
   @override
   List<Object?> get props => [_stationInfoList, _currentStationId, _isPlaying];

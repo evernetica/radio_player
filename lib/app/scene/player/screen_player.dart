@@ -46,14 +46,16 @@ class ScreenPlayer extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.cover,
                       clipBehavior: Clip.hardEdge,
-                      child: state.currentStationArtUrl == "no_image"
-                          ? Image.asset("assets/images/radio_placeholder.jpeg")
-                          : Image.network(
-                              state.currentStationArtUrl,
-                              errorBuilder: (context, child, snapshot) =>
-                                  Image.asset(
-                                      "assets/images/radio_placeholder.jpeg"),
-                            ),
+                      child: Stack(
+                        children: [
+                          Image.asset("assets/images/radio_placeholder.jpeg"),
+                          Image.network(
+                            state.currentStationArtUrl,
+                            errorBuilder: (context, child, snapshot) =>
+                                Container(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
