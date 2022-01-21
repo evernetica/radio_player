@@ -13,18 +13,19 @@ class ScreenPlayer extends StatelessWidget {
     return BlocProvider(
       create: (context) => PlayerScreenCubit(),
       child: BlocBuilder<PlayerScreenCubit, PlayerScreenState>(
-          builder: (context, state) {
-        return Container(
-          color: Colors.green,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _thumbnail(context, state),
-              _controlButtonsBar(context, state),
-            ],
-          ),
-        );
-      }),
+        builder: (context, state) {
+          return Container(
+            color: Colors.green,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _thumbnail(context, state),
+                _controlButtonsBar(context, state),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
