@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:radio_player/app/scene/player/cubit/player_cubit.dart';
+import 'package:radio_player/app/scene/player/cubit/player_state.dart';
 
 class ScreenPlayer extends StatelessWidget {
   const ScreenPlayer({
@@ -7,18 +10,27 @@ class ScreenPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.green,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _thumbnail(context),
-            _controlButtonsBar(context),
-          ],
-        ));
+    return BlocProvider(
+      create: (context) => PlayerScreenCubit(),
+      child: BlocBuilder<PlayerScreenCubit, PlayerScreenState>(
+          builder: (context, state) {
+        BlocProvider.of<PlayerScreenCubit>(context).getStationInfoList();
+
+        return Container(
+          color: Colors.green,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _thumbnail(context, state),
+              _controlButtonsBar(context),
+            ],
+          ),
+        );
+      }),
+    );
   }
 
-  Widget _thumbnail(BuildContext context) {
+  Widget _thumbnail(BuildContext context, PlayerScreenState state) {
     return AspectRatio(
       aspectRatio: 1,
       child: FractionallySizedBox(
@@ -41,14 +53,14 @@ class ScreenPlayer extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   flex: 1,
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Title Here",
-                        style: TextStyle(
+                        "google sheets loaded: ${state.stationInfoList.isNotEmpty}",
+                        style: const TextStyle(
                             inherit: false,
                             color: Colors.black,
                             fontSize: 24.0),
