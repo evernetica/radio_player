@@ -67,7 +67,7 @@ class ScreenPlayer extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        state.currentStationName + state.currentStationId.toString(),
+                        state.currentStationName,
                         style: const TextStyle(
                             inherit: false,
                             color: Colors.black,
