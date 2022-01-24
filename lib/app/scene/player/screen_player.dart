@@ -105,22 +105,22 @@ class ScreenPlayer extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _controlsButton(context, Icons.skip_previous, 2, enableButtons,
+          _controlButton(context, Icons.skip_previous, 2, enableButtons,
               _previousStationAction),
-          _controlsButton(
+          _controlButton(
               context,
               state.isPlaying ? Icons.pause : Icons.play_arrow,
               3,
               enableButtons,
               _playPauseAction),
-          _controlsButton(
+          _controlButton(
               context, Icons.skip_next, 2, enableButtons, _nextStationAction),
         ],
       ),
     );
   }
 
-  Widget _controlsButton(BuildContext context, IconData icon, int flex,
+  Widget _controlButton(BuildContext context, IconData icon, int flex,
       bool enabled, void Function(BuildContext context) callback) {
     return Expanded(
       flex: flex,
