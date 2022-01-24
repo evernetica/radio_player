@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:radio_player/app/scene/player/cubit/player_state.dart';
@@ -8,8 +9,25 @@ import 'package:radio_player/main.dart';
 
 class PlayerScreenCubit extends Cubit<PlayerScreenState> {
   StreamSubscription? subscriptionConnectionStatus;
+  StreamSubscription? subscriptionAudioHandler;
 
   PlayerScreenCubit() : super(PlayerScreenState()) {
+    // Notification buttons handler
+    subscriptionAudioHandler = controller!.stream.listen((event) {
+      switch (event) {
+        case 1:
+          prevStation();
+          break;
+        case 2:
+          nextStation();
+          break;
+        default:
+          playPause();
+          break;
+      }
+    });
+
+    // Internet connection listener
     subscriptionConnectionStatus = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) async {
@@ -34,6 +52,8 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
         isPlaying: audioPlayer!.playing,
         connection: connected,
       ));
+
+      _handleStationChange();
     });
   }
 
@@ -58,9 +78,13 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
       isPlaying: audioPlayer!.playing,
       connection: state.connection,
     ));
+
+    _handleStationChange();
   }
 
   void playPause() async {
+    if (!state.connection) return;
+
     if (audioPlayer!.playing) {
       await audioPlayer!.stop();
     } else {
@@ -73,6 +97,8 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
       isPlaying: audioPlayer!.playing,
       connection: state.connection,
     ));
+
+    _handleStationChange();
   }
 
   void nextStation() async {
@@ -88,6 +114,8 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
     ));
 
     await audioPlayer!.setUrl(state.currentStationUrl);
+
+    _handleStationChange();
   }
 
   void prevStation() async {
@@ -107,5 +135,22 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
     ));
 
     await audioPlayer!.setUrl(state.currentStationUrl);
+
+    _handleStationChange();
+  }
+
+  void _handleStationChange() {
+    audioHandler!.playbackState.add(PlaybackState(
+      playing: true,
+      processingState: AudioProcessingState.ready,
+      controls: [
+        MediaControl.skipToPrevious,
+        audioPlayer!.playing ? MediaControl.pause : MediaControl.play,
+        MediaControl.skipToNext,
+      ],
+    ));
+
+    audioHandler!.mediaItem.add(MediaItem(
+        id: "${state.currentStationId}", title: state.currentStationName));
   }
 }
