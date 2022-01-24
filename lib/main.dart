@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:radio_player/app/app_root.dart';
@@ -15,13 +16,19 @@ BaseAudioHandler? audioHandler;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  final session = await AudioSession.instance;
+  await session.configure(const AudioSessionConfiguration.music());
+
   stationInfoUseCase =
       StationInfoUseCase(repository: StationInfoGoogleSheetsRepositoryImpl());
+
   audioPlayer = AudioPlayer();
+
   controller = StreamController<int>();
   audioHandler = await AudioService.init(
     builder: () => MyAudioHandler(controller),
     config: const AudioServiceConfig(
+      androidStopForegroundOnPause: false,
       androidNotificationChannelId: 'com.mycompany.myapp.channel.audio',
       androidNotificationChannelName: 'Music playback',
     ),
