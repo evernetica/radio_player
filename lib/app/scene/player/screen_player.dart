@@ -17,9 +17,10 @@ class ScreenPlayer extends StatelessWidget {
           return Container(
             color: Colors.green,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _thumbnail(context, state),
+                _connectionIndicator(context, state),
                 _controlButtonsBar(context, state),
               ],
             ),
@@ -27,6 +28,16 @@ class ScreenPlayer extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _connectionIndicator(BuildContext context, PlayerScreenState state) {
+    return Visibility(
+        visible: !state.connection,
+        maintainAnimation: true,
+        maintainSize: true,
+        maintainState: true,
+        maintainSemantics: true,
+        child: const Icon(Icons.signal_cellular_connected_no_internet_4_bar));
   }
 
   Widget _thumbnail(BuildContext context, PlayerScreenState state) {
@@ -46,11 +57,10 @@ class ScreenPlayer extends StatelessWidget {
                       image:
                           Image.asset("assets/images/radio_placeholder.jpeg"),
                     ),
-                    _thumbnailImage(
+                    if (state.connection) _thumbnailImage(
                       image: Image.network(
                         state.currentStationArtUrl,
-                        errorBuilder: (context, child, snapshot) =>
-                            Container(),
+                        errorBuilder: (context, child, snapshot) => Container(),
                       ),
                     ),
                   ],
@@ -64,9 +74,7 @@ class ScreenPlayer extends StatelessWidget {
                     child: Text(
                       state.currentStationName,
                       style: const TextStyle(
-                          inherit: false,
-                          color: Colors.black,
-                          fontSize: 24.0),
+                          inherit: false, color: Colors.black, fontSize: 24.0),
                     ),
                   ),
                 ),
@@ -90,7 +98,7 @@ class ScreenPlayer extends StatelessWidget {
   }
 
   Widget _controlButtonsBar(BuildContext context, PlayerScreenState state) {
-    bool enableButtons = state.currentStationUrl != "";
+    bool enableButtons = state.currentStationUrl != "" && state.connection;
 
     return FractionallySizedBox(
       widthFactor: 0.7,
