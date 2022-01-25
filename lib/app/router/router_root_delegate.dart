@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:radio_player/app/router/cubit/router_cubit.dart';
 import 'package:radio_player/app/router/cubit/router_state.dart';
 import 'package:radio_player/app/scene/player/screen_player.dart';
-import 'package:radio_player/app/scene/splash/screen_splash.dart';
 
 class RouterRootDelegate extends RouterDelegate<RouterState> {
   final GlobalKey<NavigatorState> _navigatorKey;
@@ -24,10 +23,6 @@ class RouterRootDelegate extends RouterDelegate<RouterState> {
 
   List<Page> get _extraPages {
     List<Page> pages = [];
-
-    if (_routerCubit.state is RouterStateSplashScreen) {
-      pages.add(const MaterialPage(child: ScreenSplash()));
-    }
     if (_routerCubit.state is RouterStatePlayerScreen) {
       pages.add(const MaterialPage(child: ScreenPlayer()));
     }

@@ -7,13 +7,6 @@ abstract class RouterState extends Equatable {
   List<Object?> get props => [];
 }
 
-class RouterStateSplashScreen extends RouterState {
-  const RouterStateSplashScreen();
-
-  @override
-  List<Object?> get props => [];
-}
-
 class RouterStatePlayerScreen extends RouterState {
   const RouterStatePlayerScreen();
 
