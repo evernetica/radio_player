@@ -1,10 +1,9 @@
 import 'dart:async';
 
+import 'package:android_power_manager/android_power_manager.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:radio_player/app/app_root.dart';
 import 'package:radio_player/data/repositories/station_info_google_sheets_repository.dart';
@@ -19,6 +18,8 @@ AudioSession? session;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await AndroidPowerManager.requestIgnoreBatteryOptimizations();
+
   session = await AudioSession.instance;
   await session!.configure(const AudioSessionConfiguration.music());
 
@@ -29,35 +30,16 @@ void main() async {
 
   controller = StreamController<int>();
 
-  startForegroundService();
+  audioHandler = await AudioService.init(
+    builder: () => MyAudioHandler(controller),
+    config: const AudioServiceConfig(
+      androidStopForegroundOnPause: false,
+      androidNotificationChannelId: 'com.mycompany.myapp.channel.audio',
+      androidNotificationChannelName: 'Music playback',
+    ),
+  );
 
   runApp(AppRoot());
-}
-
-void startForegroundService() async {
-  await FlutterForegroundPlugin.setServiceMethodInterval(seconds: 5);
-  await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
-  await FlutterForegroundPlugin.startForegroundService(
-    holdWakeLock: false,
-    onStarted: () async {
-      audioHandler = await AudioService.init(
-        builder: () => MyAudioHandler(controller),
-        config: const AudioServiceConfig(
-          androidStopForegroundOnPause: false,
-          androidNotificationChannelId: 'com.mycompany.myapp.channel.audio',
-          androidNotificationChannelName: 'Music playback',
-        ),
-      );
-    },
-    onStopped: () {},
-    title: "Flutter Foreground Service",
-    content: "This is Content",
-    iconName: "ic_launcher",
-  );
-}
-
-void globalForegroundService() async {
-  debugPrint("====================================== current datetime is ${DateTime.now()} \n\taudio state is: ${audioPlayer!.processingState.name} \n\taudio handler state is: ${audioHandler!.playbackState.stream.value} \n\t connection: ${(await Connectivity().checkConnectivity()).name}");
 }
 
 class MyAudioHandler extends BaseAudioHandler {

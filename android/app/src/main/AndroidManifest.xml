@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
-
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
@@ -57,6 +56,5 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    <uses-sdk
-        tools:overrideLibrary="changjoopark.com.flutter_foreground_plugin" />
+    <uses-sdk tools:overrideLibrary="changjoopark.com.flutter_foreground_plugin" />
 </manifest>
