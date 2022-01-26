@@ -15,10 +15,10 @@ class ScreenPlayer extends StatelessWidget {
       create: (context) => PlayerScreenCubit(),
       child: BlocBuilder<PlayerScreenCubit, PlayerScreenState>(
         builder: (context, state) {
-          AnimatedWave? logoApp;
+          AnimatedWave? animatedWave;
 
           if(state.animationDirection != 0) {
-            logoApp = AnimatedWave(context, state.animationDirection);
+            animatedWave = AnimatedWave(context, state.animationDirection);
           }
 
           return Container(
@@ -26,7 +26,7 @@ class ScreenPlayer extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                if (logoApp != null) logoApp,
+                if (animatedWave != null) animatedWave,
                 _userInterface(context, state),
               ],
             ),
