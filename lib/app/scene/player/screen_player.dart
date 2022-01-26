@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:radio_player/app/scene/app_sizes.dart';
+import 'package:radio_player/app/scene/app_strings.dart';
 import 'package:radio_player/app/scene/player/animated_splash_widget.dart';
 import 'package:radio_player/app/scene/player/animated_wave_widget.dart';
 import 'package:radio_player/app/scene/player/cubit/player_cubit.dart';
@@ -18,7 +20,7 @@ class ScreenPlayer extends StatelessWidget {
         builder: (context, state) {
           AnimatedWave? animatedWave;
 
-          if (state.animationDirection != 0) {
+          if (state.animationDirection != AnimationDirection.none) {
             animatedWave = AnimatedWave(context, state.animationDirection);
           }
 
@@ -101,12 +103,12 @@ class ScreenPlayer extends StatelessWidget {
               children: [
                 if (animatedSplash != null) animatedSplash,
                 FractionallySizedBox(
-                  widthFactor: 0.85,
+                  widthFactor: AppSizes.widthFractionThumbnailSizePlayerScreen,
                   child: Stack(
                     children: [
                       _thumbnailImage(
-                        image:
-                            Image.asset("assets/images/radio_placeholder.jpeg"),
+                        image: Image.asset(
+                            AppStrings.pathPlaceholderImagePlayerScreen),
                       ),
                       if (state.connection)
                         _thumbnailImage(
@@ -156,24 +158,39 @@ class ScreenPlayer extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _controlButton(context, false, Icons.skip_previous, 2, enableButtons,
-              _previousStationAction),
           _controlButton(
-              context,
-              true,
-              state.isPlaying ? Icons.pause : Icons.play_arrow,
-              3,
-              enableButtons,
-              _playPauseAction),
-          _controlButton(context, false, Icons.skip_next, 2, enableButtons,
-              _nextStationAction),
+              context: context,
+              isMain: false,
+              icon: Icons.skip_previous,
+              flex: 2,
+              enabled: enableButtons,
+              callback: _previousStationAction),
+          _controlButton(
+              context: context,
+              isMain: true,
+              icon: state.isPlaying ? Icons.pause : Icons.play_arrow,
+              flex: 3,
+              enabled: enableButtons,
+              callback: _playPauseAction),
+          _controlButton(
+              context: context,
+              isMain: false,
+              icon: Icons.skip_next,
+              flex: 2,
+              enabled: enableButtons,
+              callback: _nextStationAction),
         ],
       ),
     );
   }
 
-  Widget _controlButton(BuildContext context, bool isMain, IconData icon,
-      int flex, bool enabled, void Function(BuildContext context) callback) {
+  Widget _controlButton(
+      {required BuildContext context,
+      required bool isMain,
+      required IconData icon,
+      required int flex,
+      required bool enabled,
+      required void Function(BuildContext context) callback}) {
     return Expanded(
       flex: flex,
       child: AspectRatio(

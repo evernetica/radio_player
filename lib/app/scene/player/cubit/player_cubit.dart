@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:radio_player/app/scene/player/animated_wave_widget.dart';
 import 'package:radio_player/app/scene/player/cubit/player_state.dart';
 import 'package:radio_player/domain/entities/station_info_entity.dart';
 import 'package:radio_player/main.dart';
@@ -112,7 +113,7 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
       currentStationId: stationId,
       isPlaying: state.isPlaying,
       connection: state.connection,
-      animationDirection: 2,
+      animationDirection: AnimationDirection.next,
     ));
 
     await audioPlayer!.setUrl(state.currentStationUrl);
@@ -134,7 +135,7 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
       currentStationId: stationId,
       isPlaying: state.isPlaying,
       connection: state.connection,
-      animationDirection: 1,
+      animationDirection: AnimationDirection.prev,
     ));
 
     await audioPlayer!.setUrl(state.currentStationUrl);

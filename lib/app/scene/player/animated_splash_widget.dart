@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:radio_player/app/scene/app_sizes.dart';
 
 class AnimatedSplash extends StatefulWidget {
   const AnimatedSplash(this.context, this.isTurningOn, {Key? key})
@@ -24,13 +25,18 @@ class _AnimatedSplashState extends State<AnimatedSplash>
     double width = MediaQuery.of(widget.context).size.width;
 
     controller = AnimationController(
-        duration: const Duration(milliseconds: 400), vsync: this);
+        duration: const Duration(
+            milliseconds: AppSizes.durationAnimatedSplashPlayerScreen),
+        vsync: this);
 
-    animation =
-        Tween<double>(begin: width * 0.85 - 3, end: width).animate(controller)
-          ..addListener(() {
-            setState(() {});
-          });
+    animation = Tween<double>(
+            begin: width * AppSizes.widthFractionThumbnailSizePlayerScreen -
+                AppSizes.widthBorderAnimatedSplashPlayerScreen,
+            end: width)
+        .animate(controller)
+      ..addListener(() {
+        setState(() {});
+      });
     animationColor = ColorTween(
             begin: widget.isTurningOn ? Colors.white : Colors.red,
             end: Colors.transparent)
@@ -61,7 +67,7 @@ class _AnimatedSplashState extends State<AnimatedSplash>
         border: Border.all(
           color: MaterialStateColor.resolveWith(
               (states) => animationColor.value ?? Colors.transparent),
-          width: 3,
+          width: AppSizes.widthBorderAnimatedSplashPlayerScreen,
         ),
       ),
     );

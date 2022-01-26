@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:radio_player/app/scene/player/animated_wave_widget.dart';
 import 'package:radio_player/domain/entities/station_info_entity.dart';
 
 class PlayerScreenState extends Equatable {
@@ -7,13 +8,13 @@ class PlayerScreenState extends Equatable {
     int? currentStationId,
     bool? isPlaying,
     bool? connection,
-    int? animationDirection,
+    AnimationDirection? animationDirection,
     bool? animateSplash,
   })  : _stationInfoList = stationInfoList ?? [],
         _currentStationId = currentStationId ?? 0,
         _isPlaying = isPlaying ?? false,
         _connection = connection ?? true,
-        _animationDirection = animationDirection ?? 0,
+        _animationDirection = animationDirection ?? AnimationDirection.none,
         _animateSplash = animateSplash ?? false,
         super();
 
@@ -23,7 +24,7 @@ class PlayerScreenState extends Equatable {
 
   final bool _connection;
 
-  final int _animationDirection;
+  final AnimationDirection _animationDirection;
 
   final bool _animateSplash;
 
@@ -39,7 +40,7 @@ class PlayerScreenState extends Equatable {
 
   bool get animateSplash => _animateSplash;
 
-  int get animationDirection => _animationDirection;
+  AnimationDirection get animationDirection => _animationDirection;
 
   String get currentStationUrl => _stationInfoList.isNotEmpty
       ? _stationInfoList[_currentStationId].url

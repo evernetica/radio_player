@@ -1,13 +1,20 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:radio_player/app/scene/app_sizes.dart';
+
+enum AnimationDirection {
+  none,
+  prev,
+  next,
+}
 
 class AnimatedWave extends StatefulWidget {
   const AnimatedWave(this.context, this.direction, {Key? key})
       : super(key: key);
 
   final BuildContext context;
-  final int direction;
+  final AnimationDirection direction;
 
   @override
   _AnimatedWaveState createState() => _AnimatedWaveState();
@@ -25,7 +32,7 @@ class _AnimatedWaveState extends State<AnimatedWave>
     double width = MediaQuery.of(widget.context).size.width;
 
     controller = AnimationController(
-        duration: const Duration(milliseconds: 400), vsync: this);
+        duration: const Duration(milliseconds: AppSizes.durationAnimatedWavePlayerScreen), vsync: this);
     animation = Tween<double>(begin: -width, end: width).animate(controller)
       ..addListener(() {
         setState(() {});
@@ -43,7 +50,7 @@ class _AnimatedWaveState extends State<AnimatedWave>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-        left: widget.direction == 1 ? -animation.value : animation.value,
+        left: widget.direction == AnimationDirection.next ? -animation.value : animation.value,
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Center(
@@ -56,7 +63,7 @@ class _AnimatedWaveState extends State<AnimatedWave>
                     Colors.black,
                     Colors.red,
                   ],
-                      transform: widget.direction == 1
+                      transform: widget.direction == AnimationDirection.next
                           ? const GradientRotation(pi)
                           : null)),
             ),
