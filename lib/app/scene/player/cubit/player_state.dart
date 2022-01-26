@@ -6,11 +6,13 @@ class PlayerScreenState extends Equatable {
       {List<StationInfoEntity>? stationInfoList,
       int? currentStationId,
       bool? isPlaying,
-      bool? connection})
+      bool? connection,
+      int? animationDirection})
       : _stationInfoList = stationInfoList ?? [],
         _currentStationId = currentStationId ?? 0,
         _isPlaying = isPlaying ?? false,
         _connection = connection ?? true,
+        _animationDirection = animationDirection ?? 0,
         super();
 
   final int _currentStationId;
@@ -18,6 +20,8 @@ class PlayerScreenState extends Equatable {
   final bool _isPlaying;
 
   final bool _connection;
+
+  final int _animationDirection;
 
   final List<StationInfoEntity> _stationInfoList;
 
@@ -28,6 +32,8 @@ class PlayerScreenState extends Equatable {
   bool get isPlaying => _isPlaying;
 
   bool get connection => _connection;
+
+  int get animationDirection => _animationDirection;
 
   String get currentStationUrl => _stationInfoList.isNotEmpty
       ? _stationInfoList[_currentStationId].url

@@ -111,6 +111,7 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
       currentStationId: stationId,
       isPlaying: state.isPlaying,
       connection: state.connection,
+      animationDirection: 2,
     ));
 
     await audioPlayer!.setUrl(state.currentStationUrl);
@@ -132,6 +133,7 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
       currentStationId: stationId,
       isPlaying: state.isPlaying,
       connection: state.connection,
+      animationDirection: 1,
     ));
 
     await audioPlayer!.setUrl(state.currentStationUrl);

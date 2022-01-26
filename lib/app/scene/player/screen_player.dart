@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:radio_player/app/scene/player/animated_wave_widget.dart';
 import 'package:radio_player/app/scene/player/cubit/player_cubit.dart';
 import 'package:radio_player/app/scene/player/cubit/player_state.dart';
 
@@ -14,22 +15,38 @@ class ScreenPlayer extends StatelessWidget {
       create: (context) => PlayerScreenCubit(),
       child: BlocBuilder<PlayerScreenCubit, PlayerScreenState>(
         builder: (context, state) {
+          AnimatedWave? logoApp;
+
+          if(state.animationDirection != 0) {
+            logoApp = AnimatedWave(context, state.animationDirection);
+          }
+
           return Container(
             color: Colors.black,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                _thumbnail(context, state),
-                Expanded(
-                  child: IntrinsicHeight(
-                    child: _bottomPanel(context, state),
-                  ),
-                ),
+                if (logoApp != null) logoApp,
+                _userInterface(context, state),
               ],
             ),
           );
         },
       ),
+    );
+  }
+
+  Widget _userInterface(BuildContext context, PlayerScreenState state) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _thumbnail(context, state),
+        Expanded(
+          child: IntrinsicHeight(
+            child: _bottomPanel(context, state),
+          ),
+        ),
+      ],
     );
   }
 
