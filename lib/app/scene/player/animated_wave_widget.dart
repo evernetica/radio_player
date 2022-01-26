@@ -26,16 +26,10 @@ class _AnimatedWaveState extends State<AnimatedWave>
 
     controller = AnimationController(
         duration: const Duration(milliseconds: 400), vsync: this);
-    // #docregion addListener
     animation = Tween<double>(begin: -width, end: width).animate(controller)
       ..addListener(() {
-        // #enddocregion addListener
-        setState(() {
-          // The state that has changed here is the animation object’s value.
-        });
-        // #docregion addListener
+        setState(() {});
       });
-    // #enddocregion addListener
     controller.forward();
   }
 
@@ -76,38 +70,3 @@ class _AnimatedWaveState extends State<AnimatedWave>
     super.dispose();
   }
 }
-
-//
-// @override
-// Widget build(BuildContext context) {
-//   return Positioned(
-//     left: animation.value,
-//     height: MediaQuery.of(context).size.height * 2,
-//     width: MediaQuery.of(context).size.width*2,
-//     child: FractionallySizedBox(
-//       widthFactor: 0.5,
-//       child: Container(
-//         decoration: const BoxDecoration(
-//           gradient: LinearGradient(
-//             transform: GradientRotation(0.25),
-//             begin: Alignment.centerLeft,
-//             end: Alignment.centerRight,
-//             colors: [
-//               Colors.black,
-//               Colors.white30,
-//               Colors.white30,
-//               Colors.white70,
-//               Colors.white70,
-//               Colors.white30,
-//               Colors.white30,
-//               Colors.red,
-//               Colors.red,
-//               Colors.black,
-//             ],
-//             stops: [0.2, 0.21, 0.45, 0.46, 0.55, 0.56, 0.69, 0.7, 0.71, 0.72],
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-// }

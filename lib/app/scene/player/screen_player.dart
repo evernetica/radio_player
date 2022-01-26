@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:radio_player/app/scene/player/animated_splash_widget.dart';
 import 'package:radio_player/app/scene/player/animated_wave_widget.dart';
 import 'package:radio_player/app/scene/player/cubit/player_cubit.dart';
 import 'package:radio_player/app/scene/player/cubit/player_state.dart';
@@ -17,7 +18,7 @@ class ScreenPlayer extends StatelessWidget {
         builder: (context, state) {
           AnimatedWave? animatedWave;
 
-          if(state.animationDirection != 0) {
+          if (state.animationDirection != 0) {
             animatedWave = AnimatedWave(context, state.animationDirection);
           }
 
@@ -79,6 +80,12 @@ class ScreenPlayer extends StatelessWidget {
   }
 
   Widget _thumbnail(BuildContext context, PlayerScreenState state) {
+    AnimatedSplash? animatedSplash;
+
+    if (state.animateSplash) {
+      animatedSplash = AnimatedSplash(context, state.isPlaying);
+    }
+
     return Container(
       decoration: const BoxDecoration(
         border: Border(
@@ -89,26 +96,30 @@ class ScreenPlayer extends StatelessWidget {
         children: [
           AspectRatio(
             aspectRatio: 1,
-            child: Center(
-              child: FractionallySizedBox(
-                widthFactor: 0.85,
-                child: Stack(
-                  children: [
-                    _thumbnailImage(
-                      image:
-                          Image.asset("assets/images/radio_placeholder.jpeg"),
-                    ),
-                    if (state.connection)
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                if (animatedSplash != null) animatedSplash,
+                FractionallySizedBox(
+                  widthFactor: 0.85,
+                  child: Stack(
+                    children: [
                       _thumbnailImage(
-                        image: Image.network(
-                          state.currentStationArtUrl,
-                          errorBuilder: (context, child, snapshot) =>
-                              Container(),
-                        ),
+                        image:
+                            Image.asset("assets/images/radio_placeholder.jpeg"),
                       ),
-                  ],
+                      if (state.connection)
+                        _thumbnailImage(
+                          image: Image.network(
+                            state.currentStationArtUrl,
+                            errorBuilder: (context, child, snapshot) =>
+                                Container(),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
           Center(

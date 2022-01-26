@@ -96,6 +96,7 @@ class PlayerScreenCubit extends Cubit<PlayerScreenState> {
       currentStationId: state.currentStationId,
       isPlaying: audioPlayer!.playing,
       connection: state.connection,
+      animateSplash: true,
     ));
 
     _handleStationChange();
