@@ -4,6 +4,7 @@ import 'package:android_power_manager/android_power_manager.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:radio_player/app/app_root.dart';
 import 'package:radio_player/data/repositories/station_info_google_sheets_repository.dart';
@@ -17,6 +18,11 @@ AudioSession? session;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   await AndroidPowerManager.requestIgnoreBatteryOptimizations();
 
