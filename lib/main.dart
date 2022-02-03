@@ -66,7 +66,7 @@ class MyAudioHandler extends BaseAudioHandler {
   @override
   Future<void> stop() {
     controller?.add(0);
-    return super.pause();
+    return super.stop();
   }
 
   @override
