@@ -1,16 +1,36 @@
-# radio_player
+# Radio Player
 
-A new Flutter project.
+## General Information
 
-## Getting Started
+Radio Player allows you to listen to several livestreams.
 
-This project is a starting point for a Flutter application.
+### - Project uses Clean Architecture approach
+### - Project uses Cubit for navigation purposes
 
-A few resources to get you started if this is your first Flutter project:
+## App Demo
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+| Station change animation: | Play/pause animation: | 
+| --- | --- |
+| <img src="https://github.com/Xapocc/radio_player/blob/cf773695a58f9d505ad68810425235c72be3ff06/radio_player_change_station.gif" height="360"/> | <img src="https://github.com/Xapocc/radio_player/blob/cf773695a58f9d505ad68810425235c72be3ff06/radio_player_play_pause.gif" height="360"/> |
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features:
+
+- Supports both iOS and Android.
+- Can work in background.
+- Push-notification with media control buttons.
+    - Can also be controlled with your headgear's media control buttons.
+
+## Flutter Plugins Used[^1]:
+
+[^1]: Plugins' versions can be found
+at "https://github.com/Xapocc/radio_player/blob/d7cf97d2f8e5b13e0933af069f988a9e20d75f5c/pubspec.yaml"
+
+- android_power_manager
+- audio_session
+- audio_service
+- connectivity
+- fluttertoast
+- just_audio
+- http
+- equatable
+- flutter_bloc
